@@ -1,0 +1,8 @@
+[package]
+name = "hasher"
+version = "0.1.0"
+authors = ["addy"]
+
+[dependencies]
+actix-web = "0.6.14"
+fasthash = "0.2"
