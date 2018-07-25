@@ -5,7 +5,7 @@ extern crate dotenv;
 
 use fasthash::*;
 use redis::Commands;
-use actix_web::{server, error, App, Json, Result, http, Path};
+use actix_web::{server, error, App, Json, HttpRequest, Result, http, Path};
 
 #[macro_use] extern crate serde_derive;
 #[macro_use] extern crate failure;
@@ -56,11 +56,16 @@ fn get_key(key: Path<(String)>) -> Result<Json<Pair>, GetError> {
     return ret;
 }
 
+fn index(_req: HttpRequest) -> Result<String> {
+    Ok("POST to /put/{value}".to_owned())
+}
+
 fn main() {
     server::new(
         || App::new()
-            .resource("/put/{value}", |r| r.method(http::Method::POST).with(put_value))
-            .resource("/get/{key}", |r| r.method(http::Method::GET).with(get_key)))
-            .bind("0.0.0.0:1338").expect("Can not bind to 0.0.0.0:1338")
+            .resource("/put/{value}", |r| r.method(http::Method::GET).with(put_value))
+            .resource("/get/{key}", |r| r.method(http::Method::GET).with(get_key))
+            .resource("/", |r| r.method(http::Method::GET).with(index)))
+            .bind("127.0.0.1:1338").expect("Can not bind to 127.0.0.1:1338")
             .run();
 }
