@@ -57,7 +57,7 @@ fn get_key(key: Path<(String)>) -> Result<Json<Pair>, GetError> {
 }
 
 fn index(_req: HttpRequest) -> Result<String> {
-    Ok("POST to /put/{value}".to_owned())
+    Ok("GET to /put/{value}".to_owned())
 }
 
 fn main() {
